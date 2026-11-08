@@ -292,6 +292,7 @@ header{ display:flex; align-items:center; gap:8px; padding:8px 12px; background:
     <label class="vol"><span class="vi">🔔</span><span class="vl"><ruby>効果音<rt>こうかおん</rt></ruby><small id="lSe"></small></span><input type="range" min="0" max="100" step="5" id="rSe"><output id="oSe"></output></label>
     <label class="vol"><span class="vi">🎵</span><span class="vl">BGM<small id="lBgm"></small></span><input type="range" min="0" max="100" step="5" id="rBgm"><output id="oBgm"></output></label>
     <div class="tg" style="margin-top:12px"><button id="sMute" aria-pressed="false">🔇 ミュート</button><button id="sFuri2" aria-pressed="true">ふりがな</button></div>
+    <p class="sub" id="ttsInfo" style="display:none;margin-top:12px;text-align:left;color:var(--accent-d)"></p>
     <button class="big sec" id="setClose">OK</button>
   </div></div>
 
@@ -403,21 +404,21 @@ const UI = {
        how:"听店员说的话，从4个选项中选出正确答案。<b>连续答对</b>会让店里越来越热闹！",
        r10:"便利店日语已经完美掌握！", r7:"还差一点！再看看做错的题吧。", r0:"没关系！多读几遍一定能记住。",
        lv:["冷清","普通","热闹","超人气","生意兴隆"], q:n=>`第${n}题`,
-       settings:"设置", vVoice:"语音", vSe:"音效", vBgm:"背景音乐", quitQ:"要退出游戏吗？分数不会保存。", quitNo:"继续", quitYes:"关闭游戏", quitHome:"返回开始画面", closeQ:"要关闭游戏吗？", back:"返回", bye:"感谢游玩！", byeHint:"现在可以关闭此页面。", playAgain:"再玩一次" },
+       settings:"设置", vVoice:"语音", vSe:"音效", vBgm:"背景音乐", quitQ:"要退出游戏吗？分数不会保存。", quitNo:"继续", quitYes:"关闭游戏", quitHome:"返回开始画面", closeQ:"要关闭游戏吗？", back:"返回", bye:"感谢游玩！", byeHint:"现在可以关闭此页面。", playAgain:"再玩一次", ttsNone:"此设备没有日语朗读语音。请在设备设置中添加日语语音数据。" },
   en:{ go:"Start", next:"Next", finish:"Results", ok:"Correct!", ng:"Not quite…", ans:"Answer", clerk:"Clerk", you:"You",
        again:"Play again", againMiss:"Retry missed", correct:"Correct", maxCombo:"Max combo", store:"Store level",
        levelUp:"The store is getting busier!", levelDown:"Fewer customers…", replay:"Listen again", ansVoice:"Hear answer",
        how:"Listen to the clerk and choose the right answer from 4 options. <b>Answer correctly in a row</b> to make the store busier!",
        r10:"Perfect! You've mastered konbini Japanese!", r7:"Almost! Review the ones you missed.", r0:"No worries! Read again and you'll remember.",
        lv:["Quiet","Normal","Busy","Popular","Booming"], q:n=>`Q${n}`,
-       settings:"Settings", vVoice:"Voice", vSe:"Sound effects", vBgm:"Music", quitQ:"Quit the game? Your score will not be saved.", quitNo:"Keep playing", quitYes:"Close the game", quitHome:"Back to start", closeQ:"Close the game?", back:"Back", bye:"Thanks for playing!", byeHint:"You can close this tab now.", playAgain:"Play again" },
+       settings:"Settings", vVoice:"Voice", vSe:"Sound effects", vBgm:"Music", quitQ:"Quit the game? Your score will not be saved.", quitNo:"Keep playing", quitYes:"Close the game", quitHome:"Back to start", closeQ:"Close the game?", back:"Back", bye:"Thanks for playing!", byeHint:"You can close this tab now.", playAgain:"Play again", ttsNone:"This device has no Japanese text-to-speech voice. Please add Japanese voice data in your device settings." },
   ne:{ go:"सुरु", next:"अर्को", finish:"नतिजा", ok:"सही!", ng:"गलत…", ans:"सही उत्तर", clerk:"पसले", you:"तपाईं",
        again:"फेरि खेल्नुहोस्", againMiss:"गल्ती भएका मात्र", correct:"सही", maxCombo:"अधिकतम कम्बो", store:"पसलको स्तर",
        levelUp:"पसलमा भीड बढ्यो!", levelDown:"ग्राहक घटे…", replay:"फेरि सुन्नुहोस्", ansVoice:"उत्तर सुन्नुहोस्",
        how:"पसलेको कुरा सुनेर ४ विकल्पबाट सही उत्तर छान्नुहोस्। <b>लगातार सही</b> भए पसलमा भीड बढ्छ!",
        r10:"उत्कृष्ट! कन्बिनीको जापानी भाषा पूरा सिक्नुभयो!", r7:"अलिकति बाँकी! गल्ती भएका प्रश्न फेरि पढ्नुहोस्।", r0:"चिन्ता नगर्नुहोस्! धेरै पटक पढे पक्कै सम्झिनुहुन्छ।",
        lv:["शान्त","सामान्य","भीडभाड","लोकप्रिय","धेरै चल्ती"], q:n=>`प्रश्न ${n}`,
-       settings:"सेटिङ", vVoice:"आवाज", vSe:"ध्वनि प्रभाव", vBgm:"पृष्ठभूमि संगीत", quitQ:"खेल छोड्ने हो? अंक सुरक्षित हुँदैन।", quitNo:"जारी राख्नुहोस्", quitYes:"खेल बन्द गर्नुहोस्", quitHome:"सुरुको पेजमा फर्कनुहोस्", closeQ:"खेल बन्द गर्ने हो?", back:"फर्कनुहोस्", bye:"खेलेकोमा धन्यवाद!", byeHint:"अब यो ट्याब बन्द गर्न सक्नुहुन्छ।", playAgain:"फेरि खेल्नुहोस्" },
+       settings:"सेटिङ", vVoice:"आवाज", vSe:"ध्वनि प्रभाव", vBgm:"पृष्ठभूमि संगीत", quitQ:"खेल छोड्ने हो? अंक सुरक्षित हुँदैन।", quitNo:"जारी राख्नुहोस्", quitYes:"खेल बन्द गर्नुहोस्", quitHome:"सुरुको पेजमा फर्कनुहोस्", closeQ:"खेल बन्द गर्ने हो?", back:"फर्कनुहोस्", bye:"खेलेकोमा धन्यवाद!", byeHint:"अब यो ट्याब बन्द गर्न सक्नुहुन्छ।", playAgain:"फेरि खेल्नुहोस्", ttsNone:"यो उपकरणमा जापानी पढ्ने आवाज छैन। उपकरणको सेटिङमा जापानी आवाज डाटा थप्नुहोस्।" },
 };
 const LV_JA = ["ひま","ふつう","にぎやか","{大人気|だいにんき}","{大繁盛|だいはんじょう}"];
 const LANG_ATTR = { zh:'lang="zh-CN"', en:'lang="en"', ne:'lang="ne"' };
@@ -443,7 +444,7 @@ const tr = t => `<span class="tr" ${LANG_ATTR[S.lang]}>${t}</span>`;
 /* =====================================================================
    音（効果音は合成、声は voice/ フォルダの MP3/WAV → なければ音声合成）
    ===================================================================== */
-let AC, seBus, bgmBus, bgmDuck;
+let AC, seBus, bgmBus, bgmDuck, voiceBus;
 function ac(){
   try{
     if (!AC){
@@ -451,6 +452,7 @@ function ac(){
       seBus = AC.createGain(); seBus.connect(AC.destination);
       bgmDuck = AC.createGain(); bgmDuck.connect(AC.destination);
       bgmBus = AC.createGain(); bgmBus.connect(bgmDuck);
+      voiceBus = AC.createGain(); voiceBus.connect(AC.destination);
       applyVolume();
     }
     if (AC.state === "suspended" && !document.hidden) AC.resume();
@@ -464,6 +466,7 @@ function applyVolume(){
   const t = AC.currentTime, on = S.snd ? 1 : 0;
   seBus.gain.setTargetAtTime(S.vol.se * on, t, .05);
   bgmBus.gain.setTargetAtTime(S.vol.bgm * BGM_MAX * on, t, .1);
+  voiceBus.gain.setTargetAtTime(S.vol.voice * on, t, .05);
   if (curAudio) curAudio.volume = S.vol.voice;
 }
 function tone(seq, type="sine", vol=.12){
@@ -534,18 +537,61 @@ const BGM = (() => {
 function duck(on){ if (!AC) return; bgmDuck.gain.setTargetAtTime(on ? .3 : 1, AC.currentTime, on ? .05 : .4); }
 document.addEventListener("visibilitychange", () => { if (!AC) return; document.hidden ? AC.suspend() : AC.resume(); });
 
-/* 声：voice/{key}.mp3 → voice/{key}.wav → 音声合成 */
+/* 声：voice/{key}.mp3 → voice/{key}.wav → 音声合成
+   スマホでも確実に鳴るように、録音ファイルは BGM と同じ Web Audio で再生する。
+   （PC でファイルを直接ダブルクリックで開いたとき＝file:// だけは <audio> で再生） */
 const VOICE_DIR = "voice/";
-const voiceMiss = {};   // 見つからなかったファイル
-let curAudio = null, jaVoice = null;
+const LOCAL = location.protocol === "file:";
+const voiceMiss = {}, voiceP = {};
+let curAudio = null, curSrc = null, jaVoice = null, voiceSeq = 0, ttsKeep = [], ttsUnlocked = false;
 function pickVoice(){ try{ const v = speechSynthesis.getVoices();
-  jaVoice = v.find(x=>/ja[-_]JP/i.test(x.lang) && /Nanami|Kyoko|Google|Haruka|Ayumi/i.test(x.name)) || v.find(x=>/^ja/i.test(x.lang)) || null; }catch(e){} }
-if ("speechSynthesis" in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
-function stopVoice(){ try{ curAudio && curAudio.pause(); }catch(e){} try{ speechSynthesis.cancel(); }catch(e){} duck(false); }
+  jaVoice = v.find(x=>/ja[-_]JP/i.test(x.lang) && /Nanami|Kyoko|Google|Haruka|Ayumi|O-ren/i.test(x.name)) || v.find(x=>/^ja/i.test(x.lang)) || null; }catch(e){} }
+if ("speechSynthesis" in window){ pickVoice(); try{ speechSynthesis.addEventListener("voiceschanged", pickVoice); }catch(e){ speechSynthesis.onvoiceschanged = pickVoice; } }
+function stopVoice(){
+  voiceSeq++;
+  try{ curAudio && curAudio.pause(); }catch(e){}
+  try{ curSrc && curSrc.stop(); }catch(e){} curSrc = null;
+  try{ speechSynthesis.cancel(); }catch(e){}
+  duck(false);
+}
+/* iPhone などは、タップの処理の中で一度しゃべらせないと、あとから読み上げが鳴らない */
+function unlockTTS(){
+  if (ttsUnlocked || !("speechSynthesis" in window)) return;
+  try{ const u = new SpeechSynthesisUtterance(" "); u.volume = 0; u.lang = "ja-JP"; speechSynthesis.speak(u); ttsUnlocked = true; pickVoice(); }catch(e){}
+}
 function tts(text){
   if (!("speechSynthesis" in window)) return;
-  try{ const u = new SpeechSynthesisUtterance(plain(text)); u.lang = "ja-JP"; if (jaVoice) u.voice = jaVoice; u.rate = .92; u.volume = S.vol.voice;
-    u.onstart = () => duck(true); u.onend = u.onerror = () => duck(false); speechSynthesis.speak(u); }catch(e){}
+  try{
+    const u = new SpeechSynthesisUtterance(plain(text));
+    u.lang = "ja-JP"; if (jaVoice) u.voice = jaVoice; u.rate = .92; u.volume = S.vol.voice;
+    u.onstart = () => duck(true);
+    u.onend = u.onerror = () => { duck(false); ttsKeep = ttsKeep.filter(x => x !== u); };
+    ttsKeep.push(u);   // Android の Chrome で途中で消えないように参照を持っておく
+    const go = () => { try{ speechSynthesis.resume(); }catch(e){} speechSynthesis.speak(u); };
+    // cancel の直後に speak すると無視される端末があるので少し待つ
+    if (speechSynthesis.speaking || speechSynthesis.pending){ speechSynthesis.cancel(); setTimeout(go, 150); } else setTimeout(go, 30);
+  }catch(e){}
+}
+function decode(ab){
+  return new Promise((res, rej) => { try{ const p = AC.decodeAudioData(ab, res, rej); if (p && p.then) p.then(res, rej); }catch(e){ rej(e); } });
+}
+function loadBuf(key){
+  if (!voiceP[key]) voiceP[key] = (async () => {
+    for (const ext of [".mp3", ".wav"]){
+      try{
+        const r = await fetch(VOICE_DIR + key + ext);
+        if (!r.ok || (r.headers.get("content-type") || "").includes("text/html")){ voiceMiss[key+ext] = 1; continue; }
+        return await decode(await r.arrayBuffer());
+      }catch(e){ voiceMiss[key+ext] = 1; }
+    }
+    return null;
+  })();
+  return voiceP[key];
+}
+function preloadVoices(){
+  if (LOCAL || !ac()) return;
+  QUIZ.forEach(q => { loadBuf(q.id+"_clerk"); loadBuf(q.id+"_answer"); });
+  ["welcome","end","react_ok","react_ng"].forEach(loadBuf);
 }
 function tryFile(key, ext){
   return new Promise(res => {
@@ -559,10 +605,26 @@ function tryFile(key, ext){
   });
 }
 async function voice(key, text, useTTS = true){
-  if (!S.snd || S.vol.voice <= 0) return; stopVoice();
-  const a = (await tryFile(key, ".mp3")) || (await tryFile(key, ".wav"));
-  if (a){ curAudio = a; a.volume = S.vol.voice; a.onended = a.onpause = () => duck(false); duck(true); try{ await a.play(); }catch(e){ duck(false); } }
-  else if (useTTS && text) tts(text);
+  if (!S.snd || S.vol.voice <= 0) return;
+  stopVoice(); const my = voiceSeq;
+  if (!LOCAL && ac()){
+    const buf = await loadBuf(key);
+    if (my !== voiceSeq) return;                 // 待っている間に次の声が始まった
+    if (buf){
+      const s = AC.createBufferSource(); s.buffer = buf; s.connect(voiceBus);
+      s.onended = () => { if (curSrc === s){ curSrc = null; duck(false); } };
+      curSrc = s; duck(true); s.start(); return;
+    }
+  } else if (LOCAL){
+    const a = (await tryFile(key, ".mp3")) || (await tryFile(key, ".wav"));
+    if (my !== voiceSeq) return;
+    if (a){ curAudio = a; a.volume = S.vol.voice; a.onended = a.onpause = () => duck(false); duck(true); try{ await a.play(); }catch(e){ duck(false); } return; }
+  }
+  if (useTTS && text) tts(text);
+}
+/* 日本語の読み上げ音声がない端末かどうか */
+function ttsMissing(){
+  try{ const v = speechSynthesis.getVoices(); return v.length > 0 && !v.some(x => /^ja/i.test(x.lang)); }catch(e){ return false; }
 }
 
 /* =====================================================================
@@ -994,7 +1056,13 @@ $("bLang").onclick = () => setLang({ en:"zh", zh:"ne", ne:"en" }[S.lang]);
 $("sFuri").onclick = $("bFuri").onclick = () => { S.furi = !S.furi; applyOpts(); };
 $("sFuri2").onclick = () => { S.furi = !S.furi; applyOpts(); };
 $("sMute").onclick = () => { S.snd = !S.snd; if (!S.snd) stopVoice(); applyOpts(); };
-$("sSnd").onclick = $("bSet").onclick = () => { ac(); $("ovSet").classList.add("on"); };
+$("sSnd").onclick = $("bSet").onclick = () => {
+  ac(); unlockTTS();
+  const miss = ttsMissing(), info = $("ttsInfo");
+  info.style.display = miss ? "" : "none";
+  if (miss) info.innerHTML = `⚠ ${rb("この{端末|たんまつ}には{日本語|にほんご}の{読|よ}み{上|あ}げ{音声|おんせい}がありません。{端末|たんまつ}の{設定|せってい}で{日本語|にほんご}の{音声|おんせい}データを{追加|ついか}してください。")}<br><span ${LANG_ATTR[S.lang]}>${T("ttsNone")}</span>`;
+  $("ovSet").classList.add("on");
+};
 $("setClose").onclick = () => { $("ovSet").classList.remove("on"); };
 $("ovSet").onclick = e => { if (e.target.id === "ovSet") $("ovSet").classList.remove("on"); };
 [["Voice","voice"],["Se","se"],["Bgm","bgm"]].forEach(([k,v]) => {
@@ -1049,10 +1117,12 @@ function quitGame(){
   $("ovStart").classList.add("on");
 }
 /* BGM は最初から ON：ブラウザの制限で、最初のタップ（クリック・キー入力）と同時に鳴り始める */
-function unlockAudio(){ ac(); if (S.snd && S.vol.bgm > 0 && !$("ovBye").classList.contains("on")) BGM.start(); }
+function unlockAudio(){ ac(); unlockTTS(); if (S.snd && S.vol.bgm > 0 && !$("ovBye").classList.contains("on")) BGM.start(); }
 addEventListener("pointerdown", unlockAudio, { once:true, capture:true });
 addEventListener("keydown", unlockAudio, { once:true, capture:true });
-$("go").onclick = () => { ac(); BGM.start(); $("ovStart").classList.remove("on"); newGame(QUIZ.map((_,i)=>i)); };
+addEventListener("click", unlockTTS, { once:true, capture:true });
+addEventListener("touchend", unlockTTS, { once:true, capture:true });
+$("go").onclick = () => { ac(); unlockTTS(); preloadVoices(); BGM.start(); $("ovStart").classList.remove("on"); newGame(QUIZ.map((_,i)=>i)); };
 $("again").onclick = () => { $("ovEnd").classList.remove("on"); newGame(QUIZ.map((_,i)=>i)); };
 
 /* キーボード操作（PC）：1〜4 / A〜D で選択、Enter で次へ */
