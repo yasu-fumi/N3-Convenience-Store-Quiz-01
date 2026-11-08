@@ -459,6 +459,31 @@ function ac(){
   }catch(e){}
   return AC;
 }
+/* iPhone 対策：
+   ・マナーモード（消音スイッチ）でも鳴るように、音声の種類を「再生」にする
+   ・無音の <audio> をループ再生しておくと、Web Audio（BGM・声・効果音）が消音スイッチの影響を受けない
+   ・タップの処理の中で無音を1回鳴らして、音の出力を確実に開始する */
+let silentEl = null, iosUnlocked = false;
+function silentWavURL(){
+  const rate = 8000, n = rate / 2, buf = new ArrayBuffer(44 + n), v = new DataView(buf);
+  const str = (o, t) => { for (let i = 0; i < t.length; i++) v.setUint8(o + i, t.charCodeAt(i)); };
+  str(0,"RIFF"); v.setUint32(4, 36 + n, true); str(8,"WAVE"); str(12,"fmt "); v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,1,true);
+  v.setUint32(24,rate,true); v.setUint32(28,rate,true); v.setUint16(32,1,true); v.setUint16(34,8,true); str(36,"data"); v.setUint32(40,n,true);
+  for (let i = 0; i < n; i++) v.setUint8(44 + i, 128);
+  return URL.createObjectURL(new Blob([buf], { type:"audio/wav" }));
+}
+function unlockIOS(){
+  try{ if (navigator.audioSession) navigator.audioSession.type = "playback"; }catch(e){}
+  try{
+    if (!silentEl){ silentEl = new Audio(silentWavURL()); silentEl.loop = true; silentEl.setAttribute("playsinline", ""); silentEl.volume = 0.01; }
+    const pr = silentEl.play(); if (pr && pr.catch) pr.catch(() => {});
+  }catch(e){}
+  try{
+    const c = ac(); if (!c) return;
+    if (c.state !== "running") c.resume();
+    if (!iosUnlocked){ const b = c.createBuffer(1, 1, 22050), src = c.createBufferSource(); src.buffer = b; src.connect(c.destination); src.start(0); iosUnlocked = true; }
+  }catch(e){}
+}
 /* 音量（0〜1）。BGM は声より十分小さくなるように上限を低くしている */
 const BGM_MAX = .32;
 function applyVolume(){
@@ -535,7 +560,11 @@ const BGM = (() => {
 })();
 /* 声が流れている間は BGM を小さくする */
 function duck(on){ if (!AC) return; bgmDuck.gain.setTargetAtTime(on ? .3 : 1, AC.currentTime, on ? .05 : .4); }
-document.addEventListener("visibilitychange", () => { if (!AC) return; document.hidden ? AC.suspend() : AC.resume(); });
+document.addEventListener("visibilitychange", () => {
+  if (!AC) return;
+  if (document.hidden){ AC.suspend(); try{ silentEl && silentEl.pause(); }catch(e){} }
+  else if (!$("ovBye").classList.contains("on")){ AC.resume(); try{ silentEl && silentEl.play().catch(()=>{}); }catch(e){} }
+});
 
 /* 声：voice/{key}.mp3 → voice/{key}.wav → 音声合成
    スマホでも確実に鳴るように、録音ファイルは BGM と同じ Web Audio で再生する。
@@ -569,7 +598,7 @@ function tts(text){
     ttsKeep.push(u);   // Android の Chrome で途中で消えないように参照を持っておく
     const go = () => { try{ speechSynthesis.resume(); }catch(e){} speechSynthesis.speak(u); };
     // cancel の直後に speak すると無視される端末があるので少し待つ
-    if (speechSynthesis.speaking || speechSynthesis.pending){ speechSynthesis.cancel(); setTimeout(go, 150); } else setTimeout(go, 30);
+    if (speechSynthesis.speaking || speechSynthesis.pending){ speechSynthesis.cancel(); setTimeout(go, 250); } else setTimeout(go, 250);
   }catch(e){}
 }
 function decode(ab){
@@ -1090,6 +1119,7 @@ function closeGame(){
   GEN++; if (G) G.over = true;
   stopVoice(); BGM.stop();
   try{ AC && AC.suspend(); }catch(e){}
+  try{ silentEl && silentEl.pause(); }catch(e){}
   parts = [];
   ["ovStart","ovEnd","ovSet","ovQuit"].forEach(id => $(id).classList.remove("on"));
   $("fb").classList.remove("on"); $("combo").className = "";
@@ -1117,12 +1147,13 @@ function quitGame(){
   $("ovStart").classList.add("on");
 }
 /* BGM は最初から ON：ブラウザの制限で、最初のタップ（クリック・キー入力）と同時に鳴り始める */
-function unlockAudio(){ ac(); unlockTTS(); if (S.snd && S.vol.bgm > 0 && !$("ovBye").classList.contains("on")) BGM.start(); }
+function unlockAudio(){ unlockIOS(); unlockTTS(); if (S.snd && S.vol.bgm > 0 && !$("ovBye").classList.contains("on")) BGM.start(); }
 addEventListener("pointerdown", unlockAudio, { once:true, capture:true });
 addEventListener("keydown", unlockAudio, { once:true, capture:true });
 addEventListener("click", unlockTTS, { once:true, capture:true });
-addEventListener("touchend", unlockTTS, { once:true, capture:true });
-$("go").onclick = () => { ac(); unlockTTS(); preloadVoices(); BGM.start(); $("ovStart").classList.remove("on"); newGame(QUIZ.map((_,i)=>i)); };
+addEventListener("touchend", () => { unlockIOS(); unlockTTS(); }, { once:true, capture:true });
+addEventListener("click", unlockIOS, { capture:true });
+$("go").onclick = () => { unlockIOS(); unlockTTS(); preloadVoices(); BGM.start(); $("ovStart").classList.remove("on"); newGame(QUIZ.map((_,i)=>i)); };
 $("again").onclick = () => { $("ovEnd").classList.remove("on"); newGame(QUIZ.map((_,i)=>i)); };
 
 /* キーボード操作（PC）：1〜4 / A〜D で選択、Enter で次へ */
