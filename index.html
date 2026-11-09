@@ -222,6 +222,25 @@ header{ display:flex; align-items:center; gap:8px; padding:8px 12px; background:
 .btns2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 .btns2 .big{ margin-top:14px; font-size:18px; }
 .big.danger{ background:var(--ng); box-shadow:0 5px 0 #c03a37; }
+/* 完全版教材の案内 */
+#ovPromo{ z-index:30; }
+.promo{ max-width:440px; text-align:left; position:relative; border:3px solid var(--ok); }
+.promo .x{ position:absolute; right:10px; top:10px; width:34px; height:34px; border-radius:50%; background:var(--bg); font-size:16px; font-weight:900; }
+.promo .gc{ text-align:center; font-size:clamp(22px,1.4vw + 16px,28px); font-weight:900; color:var(--ok); letter-spacing:.04em; }
+.promo .hi{ font-size:17px; font-weight:900; margin-top:10px; line-height:1.8; }
+.promo .lead{ font-size:15px; font-weight:700; line-height:1.9; margin-top:2px; }
+.promo .tr{ display:block; font-size:12px; color:var(--sub); font-weight:600; line-height:1.5; }
+.promo .pack{ background:var(--bg); border-radius:14px; padding:12px 14px; margin-top:12px; }
+.promo .pack h3{ font-size:16px; line-height:1.8; display:flex; align-items:center; gap:6px; }
+.promo .pack ul{ margin:4px 0 0 20px; }
+.promo .pack li{ font-size:14.5px; font-weight:700; line-height:1.8; margin-bottom:2px; }
+.promo .price{ display:inline-block; margin-top:8px; background:#e2f7ee; color:var(--main-d); border-radius:999px; padding:3px 12px; font-size:13px; font-weight:900; }
+.promo .see{ font-size:12px; color:var(--sub); margin-top:6px; line-height:1.6; }
+.promo a.cta{ display:block; text-align:center; text-decoration:none; margin-top:14px; background:var(--accent); color:#fff; border-radius:16px; padding:14px; font-size:clamp(17px,.8vw + 13px,21px); font-weight:900; box-shadow:0 5px 0 var(--accent-d); }
+.promo a.cta small{ display:block; font-size:12px; font-weight:700; opacity:.95; }
+.promo a.cta:active{ transform:translateY(4px); box-shadow:0 1px 0 var(--accent-d); }
+.promo .later{ display:block; margin:12px auto 0; font-size:14px; font-weight:800; color:var(--sub); padding:6px 14px; }
+.big.promoBtn{ background:#fff; color:var(--main-d); border:2px solid var(--main); box-shadow:0 4px 0 var(--main); }
 #fx{ position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:30; }
 </style>
 </head>
@@ -281,7 +300,11 @@ header{ display:flex; align-items:center; gap:8px; padding:8px 12px; background:
     <div class="miss" id="endMiss"></div>
     <button class="big sec" id="again"></button>
     <button class="big" id="againMiss"></button>
+    <button class="big promoBtn" id="promoOpen"></button>
   </div></div>
+
+  <!-- 完全版教材の案内（クリア後に表示） -->
+  <div class="ov" id="ovPromo"><div class="sheet promo" id="promo"></div></div>
 
   <!-- 設定（音量） -->
   <div class="ov" id="ovSet"><div class="sheet small">
@@ -369,8 +392,8 @@ const QUIZ = [
    clerk:"{画面|がめん}の{年齢確認|ねんれいかくにん}ボタンを{押|お}してください。",
    q:"お{客|きゃく}さんは、ボタンを{押|お}して{何|なに}を{確認|かくにん}しますか。",
    qT:{ zh:"顾客按按钮是在确认什么？", en:"What does the customer confirm by pressing the button?", ne:"ग्राहकले बटन थिचेर के पुष्टि गर्छन्?" },
-   ch:["{名前|なまえ}","{住所|じゅうしょ}","{電話番号|でんわばんごう}","20{歳|さい}{以上|いじょう}かどうか"], a:3,
-   exp:"{日本|にほん}では、お{酒|さけ}やたばこは<b>20{歳|さい}{以上|いじょう}</b>でなければ{買|か}えません。そのため、お{酒|さけ}やたばこを{買|か}うときは{画面|がめん}のボタンを{押|お}して{確認|かくにん}します。",
+   ch:["{名前|なまえ}","{住所|じゅうしょ}","{電話番号|でんわばんごう}","{20歳|はたち}{以上|いじょう}かどうか"], a:3,
+   exp:"{日本|にほん}では、お{酒|さけ}やたばこは<b>{20歳|はたち}{以上|いじょう}</b>でなければ{買|か}えません。そのため、お{酒|さけ}やたばこを{買|か}うときは{画面|がめん}のボタンを{押|お}して{確認|かくにん}します。",
    tr:{ en:"Please press the age confirmation button on the screen.", zh:"请按一下屏幕上的年龄确认按钮。", ne:"कृपया स्क्रिनमा उमेर पुष्टि गर्ने बटन थिच्नुहोस्।" } },
  { id:"q08", prop:"bag", reg:"¥260",
    clerk:"レジ{袋|ぶくろ}はご{利用|りよう}ですか？",
@@ -401,21 +424,21 @@ QUIZ.forEach(q => q.answerSay = q.id==="q08" ? "いいえ、{大丈夫|だいじ
 /* ---------- UI の翻訳 ---------- */
 const UI = {
   zh:{ go:"开始", next:"下一题", finish:"看结果", ok:"正确！", ng:"答错了…", ans:"正确答案", clerk:"店员", you:"你",
-       again:"再玩一次", againMiss:"只练错题", correct:"答对", maxCombo:"最高连击", store:"店铺等级",
+       again:"再玩一次", againMiss:"只练错题", pmLead:"想学习更多便利店收银台的日语吗？", pmPack:"完整版PDF教材", pmI1:"学习者用PDF（英语・中文・尼泊尔语）", pmI2:"教师用指南（日语）", pmI3:"30句实用日语表达", pmPrice:"付费教材・850日元", pmSee:"在note的销售页面查看详情", pmCta:"完整版教材请点这里！", pmLater:"以后再说", pmCongrats:"恭喜通关！", correct:"答对", maxCombo:"最高连击", store:"店铺等级",
        levelUp:"店里更热闹了！", levelDown:"客人变少了…", replay:"再听一遍", ansVoice:"听答案",
        how:"听店员说的话，从4个选项中选出正确答案。<b>连续答对</b>会让店里越来越热闹！",
        r10:"便利店日语已经完美掌握！", r7:"还差一点！再看看做错的题吧。", r0:"没关系！多读几遍一定能记住。",
        lv:["冷清","普通","热闹","超人气","生意兴隆"], q:n=>`第${n}题`,
        settings:"设置", vVoice:"语音", vSe:"音效", vBgm:"背景音乐", quitQ:"要退出游戏吗？分数不会保存。", quitNo:"继续", quitYes:"关闭游戏", quitHome:"返回开始画面", closeQ:"要关闭游戏吗？", back:"返回", bye:"感谢游玩！", byeHint:"现在可以关闭此页面。", playAgain:"再玩一次", sndTest:"测试声音", ttsNone:"此设备没有日语朗读语音。请在设备设置中添加日语语音数据。" },
   en:{ go:"Start", next:"Next", finish:"Results", ok:"Correct!", ng:"Not quite…", ans:"Answer", clerk:"Clerk", you:"You",
-       again:"Play again", againMiss:"Retry missed", correct:"Correct", maxCombo:"Max combo", store:"Store level",
+       again:"Play again", againMiss:"Retry missed", pmLead:"Want to learn more Japanese for the convenience store register?", pmPack:"Full PDF materials", pmI1:"Learner PDFs (English / Chinese / Nepali)", pmI2:"Teacher's guide (Japanese)", pmI3:"30 practical Japanese phrases", pmPrice:"Paid material: 850 yen", pmSee:"See details on the note sales page", pmCta:"Get the full version!", pmLater:"Later", pmCongrats:"Congratulations!", correct:"Correct", maxCombo:"Max combo", store:"Store level",
        levelUp:"The store is getting busier!", levelDown:"Fewer customers…", replay:"Listen again", ansVoice:"Hear answer",
        how:"Listen to the clerk and choose the right answer from 4 options. <b>Answer correctly in a row</b> to make the store busier!",
        r10:"Perfect! You've mastered konbini Japanese!", r7:"Almost! Review the ones you missed.", r0:"No worries! Read again and you'll remember.",
        lv:["Quiet","Normal","Busy","Popular","Booming"], q:n=>`Q${n}`,
        settings:"Settings", vVoice:"Voice", vSe:"Sound effects", vBgm:"Music", quitQ:"Quit the game? Your score will not be saved.", quitNo:"Keep playing", quitYes:"Close the game", quitHome:"Back to start", closeQ:"Close the game?", back:"Back", bye:"Thanks for playing!", byeHint:"You can close this tab now.", playAgain:"Play again", sndTest:"Sound test", ttsNone:"This device has no Japanese text-to-speech voice. Please add Japanese voice data in your device settings." },
   ne:{ go:"सुरु", next:"अर्को", finish:"नतिजा", ok:"सही!", ng:"गलत…", ans:"सही उत्तर", clerk:"पसले", you:"तपाईं",
-       again:"फेरि खेल्नुहोस्", againMiss:"गल्ती भएका मात्र", correct:"सही", maxCombo:"अधिकतम कम्बो", store:"पसलको स्तर",
+       again:"फेरि खेल्नुहोस्", againMiss:"गल्ती भएका मात्र", pmLead:"कन्बिनीको काउन्टरमा प्रयोग हुने जापानी अझ सिक्न चाहनुहुन्छ?", pmPack:"पूर्ण PDF सामग्री", pmI1:"सिकारुका लागि PDF (अंग्रेजी・चिनियाँ・नेपाली)", pmI2:"शिक्षकका लागि गाइड (जापानी)", pmI3:"३० व्यावहारिक जापानी वाक्य", pmPrice:"सशुल्क सामग्री: ८५० येन", pmSee:"note को बिक्री पेजमा विवरण हेर्नुहोस्", pmCta:"पूर्ण संस्करण यहाँ!", pmLater:"पछि", pmCongrats:"बधाई छ!", correct:"सही", maxCombo:"अधिकतम कम्बो", store:"पसलको स्तर",
        levelUp:"पसलमा भीड बढ्यो!", levelDown:"ग्राहक घटे…", replay:"फेरि सुन्नुहोस्", ansVoice:"उत्तर सुन्नुहोस्",
        how:"पसलेको कुरा सुनेर ४ विकल्पबाट सही उत्तर छान्नुहोस्। <b>लगातार सही</b> भए पसलमा भीड बढ्छ!",
        r10:"उत्कृष्ट! कन्बिनीको जापानी भाषा पूरा सिक्नुभयो!", r7:"अलिकति बाँकी! गल्ती भएका प्रश्न फेरि पढ्नुहोस्।", r0:"चिन्ता नगर्नुहोस्! धेरै पटक पढे पक्कै सम्झिनुहुन्छ।",
@@ -1138,9 +1161,12 @@ function finish(){
   $("again").innerHTML = `${rb("もう{一度|いちど}")}<small ${LANG_ATTR[S.lang]}>${T("again")}</small>`;
   const am = $("againMiss"); am.style.display = miss.length ? "" : "none";
   am.innerHTML = `${rb("まちがえた{問題|もんだい}だけ")}<small ${LANG_ATTR[S.lang]}>${T("againMiss")}</small>`;
-  am.onclick = () => { $("ovEnd").classList.remove("on"); newGame(miss); };
+  am.onclick = () => { $("ovEnd").classList.remove("on"); $("ovPromo").classList.remove("on"); newGame(miss); };
+  $("promoOpen").innerHTML = `📚 ${rb("{完全版|かんぜんばん}PDF{教材|きょうざい}")}<small ${LANG_ATTR[S.lang]}>${T("pmPack")}</small>`;
   $("ovEnd").classList.add("on");
   SE.fin(); voice("end", "ありがとうございました");
+  // 結果を少し見てもらってから、完全版教材の案内を出す
+  later(showPromo, 3200);
   if (okN >= Math.ceil(n*.7)) rain(okN === n ? 180 : 90, CONF);
 }
 
@@ -1206,6 +1232,34 @@ $("ovSet").onclick = e => { if (e.target.id === "ovSet") $("ovSet").classList.re
   r.oninput = () => { S.vol[v] = r.value / 100; $("o"+k).textContent = r.value; ac(); applyVolume(); };
   r.onchange = () => { store.set("opt3", S); if (v === "se") SE.ok(); if (v === "voice") voice("welcome", "いらっしゃいませ"); if (v === "bgm"){ BGM.on ? BGM.refresh() : BGM.start(); } };
 });
+/* ---------- 完全版教材の案内 ---------- */
+const NOTE_URL = "https://note.com/nihongo_play_lab/n/nab6dbc57873f?sub_rt=share_pw";
+function showPromo(){
+  const A = LANG_ATTR[S.lang], t = k => `<span class="tr" ${A}>${T(k)}</span>`;
+  $("promo").innerHTML = `
+    <button class="x" id="promoX" aria-label="閉じる">✕</button>
+    <div class="gc">🎉 GAME CLEAR!</div>
+    <div class="hi">${rb("おめでとうございます！")}${t("pmCongrats")}</div>
+    <div class="lead">${rb("コンビニのレジで{使|つか}う{日本語|にほんご}、もっと{学|まな}んでみませんか？")}${t("pmLead")}</div>
+    <div class="pack"><h3>📚 ${rb("{完全版|かんぜんばん}PDF{教材|きょうざい}")}</h3>
+      <ul>
+        <li>${rb("{学習者用|がくしゅうしゃよう}PDF（{英語|えいご}・{中国語|ちゅうごくご}・ネパール{語|ご}）")}${t("pmI1")}</li>
+        <li>${rb("{指導者用|しどうしゃよう}ガイド（{日本語|にほんご}）")}${t("pmI2")}</li>
+        <li>${rb("{実践的|じっせんてき}な{日本語|にほんご}{表現|ひょうげん}30{個|こ}")}${t("pmI3")}</li>
+      </ul>
+      <span class="price">${rb("{有料|ゆうりょう}{教材|きょうざい}・850{円|えん}")}</span>
+      <div class="see">${rb("noteの{販売|はんばい}ページで{詳|くわ}しく{見|み}る")}<br><span ${A}>${T("pmSee")}</span></div>
+    </div>
+    <a class="cta" id="promoCta" href="${NOTE_URL}" target="_blank" rel="noopener">📖 ${rb("{完全版|かんぜんばん}{教材|きょうざい}はこちら！")}<small ${A}>${T("pmCta")}</small></a>
+    <button class="later" id="promoLater">${rb("あとで")} / <span ${A}>${T("pmLater")}</span></button>`;
+  const close = () => $("ovPromo").classList.remove("on");
+  $("promoX").onclick = close; $("promoLater").onclick = close;
+  $("ovPromo").onclick = e => { if (e.target.id === "ovPromo") close(); };
+  $("promoCta").onclick = () => { SE.tap(); setTimeout(close, 300); };
+  $("ovPromo").classList.add("on");
+  SE.lvup();
+}
+$("promoOpen").onclick = showPromo;
 /* やめる */
 const isPlaying = () => !!(G && !G.over && document.body.classList.contains("playing"));
 function fillQuit(){
@@ -1228,7 +1282,7 @@ function closeGame(){
   try{ AC && AC.suspend(); }catch(e){}
   try{ vEl.pause(); bEl.pause(); }catch(e){}
   parts = [];
-  ["ovStart","ovEnd","ovSet","ovQuit"].forEach(id => $(id).classList.remove("on"));
+  ["ovStart","ovEnd","ovSet","ovQuit","ovPromo"].forEach(id => $(id).classList.remove("on"));
   $("fb").classList.remove("on"); $("combo").className = "";
   document.body.classList.remove("playing");
   const L = LANG_ATTR[S.lang];
@@ -1261,11 +1315,12 @@ function unlockAudio(){
 }
 ["touchend","click","keydown"].forEach(ev => addEventListener(ev, unlockAudio, { capture:true }));
 $("go").onclick = () => { unlockIOS(); unlockTTS(); preloadVoices(); BGM.start(); $("ovStart").classList.remove("on"); newGame(QUIZ.map((_,i)=>i)); };
-$("again").onclick = () => { $("ovEnd").classList.remove("on"); newGame(QUIZ.map((_,i)=>i)); };
+$("again").onclick = () => { $("ovEnd").classList.remove("on"); $("ovPromo").classList.remove("on"); newGame(QUIZ.map((_,i)=>i)); };
 
 /* キーボード操作（PC）：1〜4 / A〜D で選択、Enter で次へ */
 addEventListener("keydown", e => {
   if ($("ovBye").classList.contains("on")) return;
+  if ($("ovPromo").classList.contains("on")){ if (e.key === "Escape") $("ovPromo").classList.remove("on"); return; }
   if ($("ovQuit").classList.contains("on")){ if (e.key === "Escape") $("quitNo").click(); return; }
   if ($("ovSet").classList.contains("on")){ if (e.key === "Escape" || e.key === "Enter") $("setClose").click(); return; }
   if ($("ovStart").classList.contains("on")){ if (e.key === "Enter") $("go").click(); return; }
@@ -1291,6 +1346,7 @@ applyOpts();
   $("go").click(); let i = 0;
   const step = () => {
     if (i >= plan.length) return;
+    if (!$("choices").children.length || G.busy) return setTimeout(step, 200);   // 問題が出るまで待つ
     const q = QUIZ[G.order[G.i]], ch = plan[i++];
     $("choices").children[ch === "c" ? q.a : (q.a + 1) % 4].click();
     setTimeout(() => { if (i === plan.length && stopFb) return; next(); setTimeout(step, 900); }, 1600);
