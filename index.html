@@ -292,6 +292,8 @@ header{ display:flex; align-items:center; gap:8px; padding:8px 12px; background:
     <label class="vol"><span class="vi">🔔</span><span class="vl"><ruby>効果音<rt>こうかおん</rt></ruby><small id="lSe"></small></span><input type="range" min="0" max="100" step="5" id="rSe"><output id="oSe"></output></label>
     <label class="vol"><span class="vi">🎵</span><span class="vl">BGM<small id="lBgm"></small></span><input type="range" min="0" max="100" step="5" id="rBgm"><output id="oBgm"></output></label>
     <div class="tg" style="margin-top:12px"><button id="sMute" aria-pressed="false">🔇 ミュート</button><button id="sFuri2" aria-pressed="true">ふりがな</button></div>
+    <button class="big sec2" id="sndTest" style="margin-top:14px;font-size:16px"></button>
+    <p class="sub" id="sndStat" style="font-size:11px;margin-top:6px"></p>
     <p class="sub" id="ttsInfo" style="display:none;margin-top:12px;text-align:left;color:var(--accent-d)"></p>
     <button class="big sec" id="setClose">OK</button>
   </div></div>
@@ -404,21 +406,21 @@ const UI = {
        how:"听店员说的话，从4个选项中选出正确答案。<b>连续答对</b>会让店里越来越热闹！",
        r10:"便利店日语已经完美掌握！", r7:"还差一点！再看看做错的题吧。", r0:"没关系！多读几遍一定能记住。",
        lv:["冷清","普通","热闹","超人气","生意兴隆"], q:n=>`第${n}题`,
-       settings:"设置", vVoice:"语音", vSe:"音效", vBgm:"背景音乐", quitQ:"要退出游戏吗？分数不会保存。", quitNo:"继续", quitYes:"关闭游戏", quitHome:"返回开始画面", closeQ:"要关闭游戏吗？", back:"返回", bye:"感谢游玩！", byeHint:"现在可以关闭此页面。", playAgain:"再玩一次", ttsNone:"此设备没有日语朗读语音。请在设备设置中添加日语语音数据。" },
+       settings:"设置", vVoice:"语音", vSe:"音效", vBgm:"背景音乐", quitQ:"要退出游戏吗？分数不会保存。", quitNo:"继续", quitYes:"关闭游戏", quitHome:"返回开始画面", closeQ:"要关闭游戏吗？", back:"返回", bye:"感谢游玩！", byeHint:"现在可以关闭此页面。", playAgain:"再玩一次", sndTest:"测试声音", ttsNone:"此设备没有日语朗读语音。请在设备设置中添加日语语音数据。" },
   en:{ go:"Start", next:"Next", finish:"Results", ok:"Correct!", ng:"Not quite…", ans:"Answer", clerk:"Clerk", you:"You",
        again:"Play again", againMiss:"Retry missed", correct:"Correct", maxCombo:"Max combo", store:"Store level",
        levelUp:"The store is getting busier!", levelDown:"Fewer customers…", replay:"Listen again", ansVoice:"Hear answer",
        how:"Listen to the clerk and choose the right answer from 4 options. <b>Answer correctly in a row</b> to make the store busier!",
        r10:"Perfect! You've mastered konbini Japanese!", r7:"Almost! Review the ones you missed.", r0:"No worries! Read again and you'll remember.",
        lv:["Quiet","Normal","Busy","Popular","Booming"], q:n=>`Q${n}`,
-       settings:"Settings", vVoice:"Voice", vSe:"Sound effects", vBgm:"Music", quitQ:"Quit the game? Your score will not be saved.", quitNo:"Keep playing", quitYes:"Close the game", quitHome:"Back to start", closeQ:"Close the game?", back:"Back", bye:"Thanks for playing!", byeHint:"You can close this tab now.", playAgain:"Play again", ttsNone:"This device has no Japanese text-to-speech voice. Please add Japanese voice data in your device settings." },
+       settings:"Settings", vVoice:"Voice", vSe:"Sound effects", vBgm:"Music", quitQ:"Quit the game? Your score will not be saved.", quitNo:"Keep playing", quitYes:"Close the game", quitHome:"Back to start", closeQ:"Close the game?", back:"Back", bye:"Thanks for playing!", byeHint:"You can close this tab now.", playAgain:"Play again", sndTest:"Sound test", ttsNone:"This device has no Japanese text-to-speech voice. Please add Japanese voice data in your device settings." },
   ne:{ go:"सुरु", next:"अर्को", finish:"नतिजा", ok:"सही!", ng:"गलत…", ans:"सही उत्तर", clerk:"पसले", you:"तपाईं",
        again:"फेरि खेल्नुहोस्", againMiss:"गल्ती भएका मात्र", correct:"सही", maxCombo:"अधिकतम कम्बो", store:"पसलको स्तर",
        levelUp:"पसलमा भीड बढ्यो!", levelDown:"ग्राहक घटे…", replay:"फेरि सुन्नुहोस्", ansVoice:"उत्तर सुन्नुहोस्",
        how:"पसलेको कुरा सुनेर ४ विकल्पबाट सही उत्तर छान्नुहोस्। <b>लगातार सही</b> भए पसलमा भीड बढ्छ!",
        r10:"उत्कृष्ट! कन्बिनीको जापानी भाषा पूरा सिक्नुभयो!", r7:"अलिकति बाँकी! गल्ती भएका प्रश्न फेरि पढ्नुहोस्।", r0:"चिन्ता नगर्नुहोस्! धेरै पटक पढे पक्कै सम्झिनुहुन्छ।",
        lv:["शान्त","सामान्य","भीडभाड","लोकप्रिय","धेरै चल्ती"], q:n=>`प्रश्न ${n}`,
-       settings:"सेटिङ", vVoice:"आवाज", vSe:"ध्वनि प्रभाव", vBgm:"पृष्ठभूमि संगीत", quitQ:"खेल छोड्ने हो? अंक सुरक्षित हुँदैन।", quitNo:"जारी राख्नुहोस्", quitYes:"खेल बन्द गर्नुहोस्", quitHome:"सुरुको पेजमा फर्कनुहोस्", closeQ:"खेल बन्द गर्ने हो?", back:"फर्कनुहोस्", bye:"खेलेकोमा धन्यवाद!", byeHint:"अब यो ट्याब बन्द गर्न सक्नुहुन्छ।", playAgain:"फेरि खेल्नुहोस्", ttsNone:"यो उपकरणमा जापानी पढ्ने आवाज छैन। उपकरणको सेटिङमा जापानी आवाज डाटा थप्नुहोस्।" },
+       settings:"सेटिङ", vVoice:"आवाज", vSe:"ध्वनि प्रभाव", vBgm:"पृष्ठभूमि संगीत", quitQ:"खेल छोड्ने हो? अंक सुरक्षित हुँदैन।", quitNo:"जारी राख्नुहोस्", quitYes:"खेल बन्द गर्नुहोस्", quitHome:"सुरुको पेजमा फर्कनुहोस्", closeQ:"खेल बन्द गर्ने हो?", back:"फर्कनुहोस्", bye:"खेलेकोमा धन्यवाद!", byeHint:"अब यो ट्याब बन्द गर्न सक्नुहुन्छ।", playAgain:"फेरि खेल्नुहोस्", sndTest:"ध्वनि परीक्षण", ttsNone:"यो उपकरणमा जापानी पढ्ने आवाज छैन। उपकरणको सेटिङमा जापानी आवाज डाटा थप्नुहोस्।" },
 };
 const LV_JA = ["ひま","ふつう","にぎやか","{大人気|だいにんき}","{大繁盛|だいはんじょう}"];
 const LANG_ATTR = { zh:'lang="zh-CN"', en:'lang="en"', ne:'lang="ne"' };
@@ -443,7 +445,10 @@ const tr = t => `<span class="tr" ${LANG_ATTR[S.lang]}>${t}</span>`;
 
 /* =====================================================================
    音（効果音は合成、声は voice/ フォルダの MP3/WAV → なければ音声合成）
+   ・PC / Android：すべて Web Audio で再生
+   ・iPhone / iPad：声と BGM は <audio> 要素で再生（Web Audio が無音になる端末・アプリ内ブラウザ対策）
    ===================================================================== */
+const IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1) || /[?&]ios=1/.test(location.search);  // ?ios=1 は PC での確認用
 let AC, seBus, bgmBus, bgmDuck, voiceBus;
 function ac(){
   try{
@@ -455,44 +460,54 @@ function ac(){
       voiceBus = AC.createGain(); voiceBus.connect(AC.destination);
       applyVolume();
     }
-    if (AC.state === "suspended" && !document.hidden) AC.resume();
+    if (AC.state !== "running" && AC.state !== "closed" && !document.hidden) AC.resume();
   }catch(e){}
   return AC;
 }
-/* iPhone 対策：
-   ・マナーモード（消音スイッチ）でも鳴るように、音声の種類を「再生」にする
-   ・無音の <audio> をループ再生しておくと、Web Audio（BGM・声・効果音）が消音スイッチの影響を受けない
-   ・タップの処理の中で無音を1回鳴らして、音の出力を確実に開始する */
-let silentEl = null, iosUnlocked = false;
-function silentWavURL(){
-  const rate = 8000, n = rate / 2, buf = new ArrayBuffer(44 + n), v = new DataView(buf);
+
+/* ---------- WAV 書き出し（無音・BGM を <audio> で鳴らすため） ---------- */
+function wavURL(samples, rate){
+  const n = samples.length, buf = new ArrayBuffer(44 + n*2), v = new DataView(buf);
   const str = (o, t) => { for (let i = 0; i < t.length; i++) v.setUint8(o + i, t.charCodeAt(i)); };
-  str(0,"RIFF"); v.setUint32(4, 36 + n, true); str(8,"WAVE"); str(12,"fmt "); v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,1,true);
-  v.setUint32(24,rate,true); v.setUint32(28,rate,true); v.setUint16(32,1,true); v.setUint16(34,8,true); str(36,"data"); v.setUint32(40,n,true);
-  for (let i = 0; i < n; i++) v.setUint8(44 + i, 128);
+  str(0,"RIFF"); v.setUint32(4, 36 + n*2, true); str(8,"WAVE"); str(12,"fmt "); v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,1,true);
+  v.setUint32(24,rate,true); v.setUint32(28,rate*2,true); v.setUint16(32,2,true); v.setUint16(34,16,true); str(36,"data"); v.setUint32(40,n*2,true);
+  for (let i = 0; i < n; i++){ const x = Math.max(-1, Math.min(1, samples[i])); v.setInt16(44 + i*2, x * 32767, true); }
   return URL.createObjectURL(new Blob([buf], { type:"audio/wav" }));
 }
+const SILENT_URL = wavURL(new Float32Array(11025), 22050);
+
+/* iPhone 用の <audio> 要素（タップの中で一度再生すると、そのあと自由に鳴らせる） */
+const vEl = new Audio(), bEl = new Audio();
+[vEl, bEl].forEach(el => { el.preload = "auto"; el.setAttribute("playsinline", ""); el.setAttribute("webkit-playsinline", ""); });
+bEl.loop = true;
+let elUnlocked = false, iosUnlocked = false;
 function unlockIOS(){
   try{ if (navigator.audioSession) navigator.audioSession.type = "playback"; }catch(e){}
-  try{
-    if (!silentEl){ silentEl = new Audio(silentWavURL()); silentEl.loop = true; silentEl.setAttribute("playsinline", ""); silentEl.volume = 0.01; }
-    const pr = silentEl.play(); if (pr && pr.catch) pr.catch(() => {});
-  }catch(e){}
+  if (IOS && !elUnlocked){
+    elUnlocked = true;
+    [vEl, bEl].forEach(el => {
+      if (el.src && !el.paused) return;
+      try{ el.src = SILENT_URL; const p = el.play(); if (p && p.then) p.then(() => { if (el.src === SILENT_URL) el.pause(); }, () => { elUnlocked = false; }); }catch(e){ elUnlocked = false; }
+    });
+  }
   try{
     const c = ac(); if (!c) return;
-    if (c.state !== "running") c.resume();
     if (!iosUnlocked){ const b = c.createBuffer(1, 1, 22050), src = c.createBufferSource(); src.buffer = b; src.connect(c.destination); src.start(0); iosUnlocked = true; }
   }catch(e){}
 }
+
 /* 音量（0〜1）。BGM は声より十分小さくなるように上限を低くしている */
 const BGM_MAX = .32;
 function applyVolume(){
-  if (!AC) return;
-  const t = AC.currentTime, on = S.snd ? 1 : 0;
-  seBus.gain.setTargetAtTime(S.vol.se * on, t, .05);
-  bgmBus.gain.setTargetAtTime(S.vol.bgm * BGM_MAX * on, t, .1);
-  voiceBus.gain.setTargetAtTime(S.vol.voice * on, t, .05);
+  if (AC){
+    const t = AC.currentTime, on = S.snd ? 1 : 0;
+    seBus.gain.setTargetAtTime(S.vol.se * on, t, .05);
+    bgmBus.gain.setTargetAtTime(S.vol.bgm * BGM_MAX * on, t, .1);
+    voiceBus.gain.setTargetAtTime(S.vol.voice * on, t, .05);
+  }
   if (curAudio) curAudio.volume = S.vol.voice;
+  try{ vEl.volume = S.vol.voice; }catch(e){}
+  if (IOS && BGM.on){ if (!S.snd || S.vol.bgm <= 0) bEl.pause(); else if (bEl.paused) bEl.play().catch(()=>{}); }
 }
 function tone(seq, type="sine", vol=.12){
   if (!S.snd) return; const c = ac(); if (!c) return;
@@ -514,9 +529,9 @@ const SE = {
   fin:  () => { tone([[523,.15,.12],[659,.15,.12],[784,.15,.12],[1046,.2,.15],[784,.12,.1],[1046,.5]], "triangle", .12); },
 };
 
-/* ---------- BGM（オリジナル曲をその場で合成：明るいコンビニ風・8小節ループ） ---------- */
+/* ---------- BGM（オリジナル曲を合成：明るいコンビニ風・8小節ループ） ---------- */
 const BGM = (() => {
-  const BPM = 118, E = 60 / BPM / 2;             // 8分音符の長さ
+  const BPM = 118, E = 60 / BPM / 2, STEPS = 64;   // 8分音符 × 8小節
   const mf = m => 440 * Math.pow(2, (m - 69) / 12);
   const MEL = [
     [76,null,79,null,81,79,76,null],[72,null,76,null,74,72,69,null],
@@ -526,62 +541,93 @@ const BGM = (() => {
   ];
   const CH = [[60,64,67],[57,60,64],[57,60,65],[55,59,62],[60,64,67],[57,60,64],[57,60,65],[55,59,62]];
   const BASS = [48,45,41,43,48,45,41,43];
-  let timer = null, next = 0, step = 0, noise = null;
-  function note(f, t, d, type, vol, cut){
-    const o = AC.createOscillator(), g = AC.createGain();
+  const noiseOf = new WeakMap();
+  function note(ctx, dest, f, t, d, type, vol, cut){
+    const o = ctx.createOscillator(), g = ctx.createGain();
     o.type = type; o.frequency.setValueAtTime(f, t);
     g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .012); g.gain.exponentialRampToValueAtTime(.0001, t + d);
-    if (cut){ const lp = AC.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = cut; o.connect(lp).connect(g); } else o.connect(g);
-    g.connect(bgmBus); o.start(t); o.stop(t + d + .03);
+    if (cut){ const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = cut; o.connect(lp).connect(g); } else o.connect(g);
+    g.connect(dest); o.start(t); o.stop(t + d + .03);
   }
-  function hat(t){
-    if (!noise){ noise = AC.createBuffer(1, AC.sampleRate * .05, AC.sampleRate); const d = noise.getChannelData(0); for (let i=0;i<d.length;i++) d[i] = Math.random()*2-1; }
-    const s = AC.createBufferSource(), hp = AC.createBiquadFilter(), g = AC.createGain();
-    s.buffer = noise; hp.type = "highpass"; hp.frequency.value = 7000;
+  function hat(ctx, dest, t){
+    let nb = noiseOf.get(ctx);
+    if (!nb){ nb = ctx.createBuffer(1, Math.floor(ctx.sampleRate * .05), ctx.sampleRate); const d = nb.getChannelData(0); for (let i=0;i<d.length;i++) d[i] = Math.random()*2-1; noiseOf.set(ctx, nb); }
+    const s = ctx.createBufferSource(), hp = ctx.createBiquadFilter(), g = ctx.createGain();
+    s.buffer = nb; hp.type = "highpass"; hp.frequency.value = 7000;
     g.gain.setValueAtTime(.05, t); g.gain.exponentialRampToValueAtTime(.0001, t + .04);
-    s.connect(hp).connect(g).connect(bgmBus); s.start(t);
+    s.connect(hp).connect(g).connect(dest); s.start(t);
   }
+  function step(ctx, dest, n, t){
+    const bar = Math.floor(n / 8) % 8, e = n % 8;
+    const m = MEL[bar][e]; if (m) note(ctx, dest, mf(m), t, E * 1.6, "triangle", .16, 3200);
+    if (e % 4 === 0) note(ctx, dest, mf(BASS[bar]), t, E * 1.8, "triangle", .32);
+    if (e % 4 === 2) note(ctx, dest, mf(BASS[bar] + 7), t, E * 1.4, "triangle", .2);
+    if (e % 2 === 1){ CH[bar].forEach(c => note(ctx, dest, mf(c), t, E * .8, "square", .025, 1600)); hat(ctx, dest, t); }
+  }
+  /* PC / Android：その場で鳴らす */
+  let timer = null, next = 0, n = 0, on = false;
   function schedule(){
-    if (next < AC.currentTime) next = AC.currentTime + .05;   // タブ復帰時に一気に鳴らさない
-    while (next < AC.currentTime + .15){
-      const bar = Math.floor(step / 8) % 8, e = step % 8, t = next;
-      const m = MEL[bar][e]; if (m) note(mf(m), t, E * 1.6, "triangle", .16, 3200);
-      if (e % 4 === 0) note(mf(BASS[bar]), t, E * 1.8, "triangle", .32);
-      if (e % 4 === 2) note(mf(BASS[bar] + 7), t, E * 1.4, "triangle", .2);
-      if (e % 2 === 1) { CH[bar].forEach(c => note(mf(c), t, E * .8, "square", .025, 1600)); hat(t); }
-      next += E; step++;
-    }
+    if (next < AC.currentTime) next = AC.currentTime + .05;
+    while (next < AC.currentTime + .15){ step(AC, bgmBus, n, next); next += E; n++; }
+  }
+  /* iPhone：1周分を WAV に書き出して <audio loop> で鳴らす */
+  let url = null, renderedVol = -1, rendering = null;
+  async function render(){
+    const vol = S.vol.bgm * BGM_MAX;
+    if (url && renderedVol === vol) return url;
+    const rate = 22050, len = Math.ceil(STEPS * E * rate);
+    const OC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+    const oc = new OC(1, len, rate), g = oc.createGain(); g.gain.value = vol; g.connect(oc.destination);
+    for (let i = 0; i < STEPS; i++) step(oc, g, i, i * E);
+    const buf = await new Promise((res, rej) => { oc.oncomplete = e => res(e.renderedBuffer); const p = oc.startRendering(); if (p && p.then) p.then(res, rej); });
+    if (url) URL.revokeObjectURL(url);
+    url = wavURL(buf.getChannelData(0), rate); renderedVol = vol;
+    return url;
+  }
+  async function playIOS(){
+    if (!S.snd || S.vol.bgm <= 0) return;
+    try{
+      const u = await (rendering = render());
+      if (!on) return;
+      if (bEl.src !== u){ bEl.src = u; }
+      bEl.loop = true; await bEl.play();
+    }catch(e){}
   }
   return {
-    start(){ const c = ac(); if (!c || timer) return; next = c.currentTime + .1; step = 0; timer = setInterval(schedule, 30); },
-    stop(){ clearInterval(timer); timer = null; },
-    get on(){ return !!timer; },
+    start(){
+      if (on) return; on = true;
+      if (IOS){ playIOS(); return; }
+      const c = ac(); if (!c) return; next = c.currentTime + .1; n = 0; timer = setInterval(schedule, 30);
+    },
+    stop(){ on = false; clearInterval(timer); timer = null; try{ bEl.pause(); }catch(e){} },
+    refresh(){ if (IOS && on) playIOS(); },          // 音量を変えたとき（iPhone は書き出し直す）
+    resumeIOS(){ if (IOS && on && S.snd && S.vol.bgm > 0 && bEl.paused) bEl.play().catch(()=>{}); },
+    get on(){ return on; },
   };
 })();
-/* 声が流れている間は BGM を小さくする */
+/* 声が流れている間は BGM を小さくする（iPhone は音量を変えられないのでそのまま） */
 function duck(on){ if (!AC) return; bgmDuck.gain.setTargetAtTime(on ? .3 : 1, AC.currentTime, on ? .05 : .4); }
 document.addEventListener("visibilitychange", () => {
-  if (!AC) return;
-  if (document.hidden){ AC.suspend(); try{ silentEl && silentEl.pause(); }catch(e){} }
-  else if (!$("ovBye").classList.contains("on")){ AC.resume(); try{ silentEl && silentEl.play().catch(()=>{}); }catch(e){} }
+  if (document.hidden){ try{ AC && AC.suspend(); }catch(e){} try{ bEl.pause(); vEl.pause(); }catch(e){} }
+  else if (!$("ovBye").classList.contains("on")){ try{ AC && AC.resume(); }catch(e){} BGM.resumeIOS(); }
 });
 
-/* 声：voice/{key}.mp3 → voice/{key}.wav → 音声合成
-   スマホでも確実に鳴るように、録音ファイルは BGM と同じ Web Audio で再生する。
-   （PC でファイルを直接ダブルクリックで開いたとき＝file:// だけは <audio> で再生） */
+/* ---------- 声 ---------- */
 const VOICE_DIR = "voice/";
 const LOCAL = location.protocol === "file:";
-const voiceMiss = {}, voiceP = {};
-let curAudio = null, curSrc = null, jaVoice = null, voiceSeq = 0, ttsKeep = [], ttsUnlocked = false;
+const voiceMiss = {}, voiceP = {}, voiceU = {};
+let curAudio = null, curSrc = null, jaVoice = null, voiceSeq = 0, ttsKeep = [], ttsUnlocked = false, voiceDone = null;
 function pickVoice(){ try{ const v = speechSynthesis.getVoices();
   jaVoice = v.find(x=>/ja[-_]JP/i.test(x.lang) && /Nanami|Kyoko|Google|Haruka|Ayumi|O-ren/i.test(x.name)) || v.find(x=>/^ja/i.test(x.lang)) || null; }catch(e){} }
 if ("speechSynthesis" in window){ pickVoice(); try{ speechSynthesis.addEventListener("voiceschanged", pickVoice); }catch(e){ speechSynthesis.onvoiceschanged = pickVoice; } }
+function finishVoice(){ const d = voiceDone; voiceDone = null; if (d) d(); }
 function stopVoice(){
   voiceSeq++;
   try{ curAudio && curAudio.pause(); }catch(e){}
   try{ curSrc && curSrc.stop(); }catch(e){} curSrc = null;
+  try{ if (!vEl.paused) vEl.pause(); }catch(e){}
   try{ speechSynthesis.cancel(); }catch(e){}
-  duck(false);
+  duck(false); finishVoice();
 }
 /* iPhone などは、タップの処理の中で一度しゃべらせないと、あとから読み上げが鳴らない */
 function unlockTTS(){
@@ -589,38 +635,46 @@ function unlockTTS(){
   try{ const u = new SpeechSynthesisUtterance(" "); u.volume = 0; u.lang = "ja-JP"; speechSynthesis.speak(u); ttsUnlocked = true; pickVoice(); }catch(e){}
 }
 function tts(text){
-  if (!("speechSynthesis" in window)) return;
+  if (!("speechSynthesis" in window)) return finishVoice();
   try{
     const u = new SpeechSynthesisUtterance(plain(text));
     u.lang = "ja-JP"; if (jaVoice) u.voice = jaVoice; u.rate = .92; u.volume = S.vol.voice;
     u.onstart = () => duck(true);
-    u.onend = u.onerror = () => { duck(false); ttsKeep = ttsKeep.filter(x => x !== u); };
+    u.onend = u.onerror = () => { duck(false); ttsKeep = ttsKeep.filter(x => x !== u); finishVoice(); };
     ttsKeep.push(u);   // Android の Chrome で途中で消えないように参照を持っておく
     const go = () => { try{ speechSynthesis.resume(); }catch(e){} speechSynthesis.speak(u); };
-    // cancel の直後に speak すると無視される端末があるので少し待つ
-    if (speechSynthesis.speaking || speechSynthesis.pending){ speechSynthesis.cancel(); setTimeout(go, 250); } else setTimeout(go, 250);
-  }catch(e){}
+    if (speechSynthesis.speaking || speechSynthesis.pending) speechSynthesis.cancel();
+    setTimeout(go, 250);   // cancel の直後に speak すると無視される端末があるので少し待つ
+  }catch(e){ finishVoice(); }
 }
 function decode(ab){
   return new Promise((res, rej) => { try{ const p = AC.decodeAudioData(ab, res, rej); if (p && p.then) p.then(res, rej); }catch(e){ rej(e); } });
 }
-function loadBuf(key){
-  if (!voiceP[key]) voiceP[key] = (async () => {
+/* ファイルがあるか調べて URL を返す（mp3 → wav の順） */
+function findURL(key){
+  if (!voiceU[key]) voiceU[key] = (async () => {
     for (const ext of [".mp3", ".wav"]){
       try{
-        const r = await fetch(VOICE_DIR + key + ext);
-        if (!r.ok || (r.headers.get("content-type") || "").includes("text/html")){ voiceMiss[key+ext] = 1; continue; }
-        return await decode(await r.arrayBuffer());
+        const r = await fetch(VOICE_DIR + key + ext, { method:"HEAD" });
+        if (r.ok && !(r.headers.get("content-type") || "").includes("text/html")) return VOICE_DIR + key + ext;
+        voiceMiss[key+ext] = 1;
       }catch(e){ voiceMiss[key+ext] = 1; }
     }
     return null;
   })();
+  return voiceU[key];
+}
+function loadBuf(key){
+  if (!voiceP[key]) voiceP[key] = (async () => {
+    const u = await findURL(key); if (!u) return null;
+    try{ const r = await fetch(u); return await decode(await r.arrayBuffer()); }catch(e){ return null; }
+  })();
   return voiceP[key];
 }
 function preloadVoices(){
-  if (LOCAL || !ac()) return;
-  QUIZ.forEach(q => { loadBuf(q.id+"_clerk"); loadBuf(q.id+"_answer"); });
-  ["welcome","end","react_ok","react_ng"].forEach(loadBuf);
+  if (LOCAL) return;
+  const keys = QUIZ.flatMap(q => [q.id+"_clerk", q.id+"_answer"]).concat(["welcome","end","react_ok","react_ng"]);
+  if (IOS) keys.forEach(findURL); else if (ac()) keys.forEach(loadBuf);
 }
 function tryFile(key, ext){
   return new Promise(res => {
@@ -633,23 +687,39 @@ function tryFile(key, ext){
     a.load();
   });
 }
-async function voice(key, text, useTTS = true){
-  if (!S.snd || S.vol.voice <= 0) return;
+/* 声を鳴らす。鳴り終わったら解決する Promise を返す */
+function voice(key, text, useTTS = true){
+  if (!S.snd || S.vol.voice <= 0) return Promise.resolve();
   stopVoice(); const my = voiceSeq;
-  if (!LOCAL && ac()){
-    const buf = await loadBuf(key);
-    if (my !== voiceSeq) return;                 // 待っている間に次の声が始まった
-    if (buf){
-      const s = AC.createBufferSource(); s.buffer = buf; s.connect(voiceBus);
-      s.onended = () => { if (curSrc === s){ curSrc = null; duck(false); } };
-      curSrc = s; duck(true); s.start(); return;
+  const done = new Promise(res => { voiceDone = res; });
+  (async () => {
+    if (LOCAL){
+      const a = (await tryFile(key, ".mp3")) || (await tryFile(key, ".wav"));
+      if (my !== voiceSeq) return;
+      if (a){ curAudio = a; a.volume = S.vol.voice; a.onended = () => { duck(false); finishVoice(); }; duck(true); try{ await a.play(); }catch(e){ duck(false); finishVoice(); } return; }
+    } else if (IOS){
+      const u = await findURL(key);
+      if (my !== voiceSeq) return;
+      if (u){
+        vEl.onended = () => { if (my === voiceSeq){ finishVoice(); BGM.resumeIOS(); } };
+        vEl.onerror = () => { if (my === voiceSeq){ useTTS && text ? tts(text) : finishVoice(); } };
+        try{ vEl.src = u; vEl.currentTime = 0; await vEl.play(); BGM.resumeIOS(); }
+        catch(e){ if (my === voiceSeq){ useTTS && text ? tts(text) : finishVoice(); } }
+        return;
+      }
+    } else if (ac()){
+      const buf = await loadBuf(key);
+      if (my !== voiceSeq) return;
+      if (buf){
+        const s = AC.createBufferSource(); s.buffer = buf; s.connect(voiceBus);
+        s.onended = () => { if (curSrc === s){ curSrc = null; duck(false); finishVoice(); } };
+        curSrc = s; duck(true); s.start(); return;
+      }
     }
-  } else if (LOCAL){
-    const a = (await tryFile(key, ".mp3")) || (await tryFile(key, ".wav"));
     if (my !== voiceSeq) return;
-    if (a){ curAudio = a; a.volume = S.vol.voice; a.onended = a.onpause = () => duck(false); duck(true); try{ await a.play(); }catch(e){ duck(false); } return; }
-  }
-  if (useTTS && text) tts(text);
+    if (useTTS && text) tts(text); else finishVoice();
+  })();
+  return done;
 }
 /* 日本語の読み上げ音声がない端末かどうか */
 function ttsMissing(){
@@ -893,8 +963,10 @@ function newGame(order){
   $("combo").className = "";
   applyLevel(G.level);
   SE.door();
-  voice("welcome", "いらっしゃいませ");
-  later(showQ, 900);
+  // 「いらっしゃいませ」が言い終わってから約1.5秒あけて第1問へ
+  const g = GEN;
+  Promise.race([ voice("welcome", "いらっしゃいませ"), new Promise(r => setTimeout(r, 5000)) ])
+    .then(() => { if (g === GEN) later(showQ, 1500); });
 }
 /* 翻訳を含む文の描画（言語を切り替えたときも呼ぶ） */
 function renderQText(q, pop){
@@ -1063,6 +1135,7 @@ function applyOpts(){
   $("lBgm").innerHTML = `<span ${LANG_ATTR[S.lang]}>${T("vBgm")}</span>`;
   $("setTr").innerHTML = `<span ${LANG_ATTR[S.lang]}>${T("settings")}</span>`;
   fillQuit();
+  $("sndTest").innerHTML = `🔊 ${rb("{音|おと}のテスト")}<small ${LANG_ATTR[S.lang]}>${T("sndTest")}</small>`;
   applyVolume();
   document.querySelectorAll(".seg.lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.l === S.lang));
   $("bLang").textContent = { en:"EN", zh:"中文", ne:"नेपाली" }[S.lang];
@@ -1090,14 +1163,25 @@ $("sSnd").onclick = $("bSet").onclick = () => {
   const miss = ttsMissing(), info = $("ttsInfo");
   info.style.display = miss ? "" : "none";
   if (miss) info.innerHTML = `⚠ ${rb("この{端末|たんまつ}には{日本語|にほんご}の{読|よ}み{上|あ}げ{音声|おんせい}がありません。{端末|たんまつ}の{設定|せってい}で{日本語|にほんご}の{音声|おんせい}データを{追加|ついか}してください。")}<br><span ${LANG_ATTR[S.lang]}>${T("ttsNone")}</span>`;
+  sndStat();
   $("ovSet").classList.add("on");
 };
 $("setClose").onclick = () => { $("ovSet").classList.remove("on"); };
+function sndStat(){
+  $("sndStat").textContent = `${IOS ? "iPhone/iPad" : "Web Audio"} ・ audio:${AC ? AC.state : "-"} ・ BGM:${BGM.on ? (IOS ? (bEl.paused ? "paused" : "playing") : "on") : "off"} ・ voice:${S.snd && S.vol.voice > 0 ? "on" : "off"}`;
+}
+$("sndTest").onclick = () => {
+  unlockIOS(); unlockTTS();
+  if (!S.snd){ S.snd = true; applyOpts(); }
+  if (S.vol.bgm > 0 && !BGM.on) BGM.start(); else BGM.resumeIOS();
+  SE.ok(); setTimeout(() => { voice("welcome", "いらっしゃいませ"); sndStat(); }, 700);
+  setTimeout(sndStat, 2500);
+};
 $("ovSet").onclick = e => { if (e.target.id === "ovSet") $("ovSet").classList.remove("on"); };
 [["Voice","voice"],["Se","se"],["Bgm","bgm"]].forEach(([k,v]) => {
   const r = $("r"+k);
   r.oninput = () => { S.vol[v] = r.value / 100; $("o"+k).textContent = r.value; ac(); applyVolume(); };
-  r.onchange = () => { store.set("opt3", S); if (v === "se") SE.ok(); if (v === "voice") voice("welcome", "いらっしゃいませ"); if (v === "bgm" && !BGM.on) BGM.start(); };
+  r.onchange = () => { store.set("opt3", S); if (v === "se") SE.ok(); if (v === "voice") voice("welcome", "いらっしゃいませ"); if (v === "bgm"){ BGM.on ? BGM.refresh() : BGM.start(); } };
 });
 /* やめる */
 const isPlaying = () => !!(G && !G.over && document.body.classList.contains("playing"));
@@ -1119,7 +1203,7 @@ function closeGame(){
   GEN++; if (G) G.over = true;
   stopVoice(); BGM.stop();
   try{ AC && AC.suspend(); }catch(e){}
-  try{ silentEl && silentEl.pause(); }catch(e){}
+  try{ vEl.pause(); bEl.pause(); }catch(e){}
   parts = [];
   ["ovStart","ovEnd","ovSet","ovQuit"].forEach(id => $(id).classList.remove("on"));
   $("fb").classList.remove("on"); $("combo").className = "";
@@ -1147,12 +1231,12 @@ function quitGame(){
   $("ovStart").classList.add("on");
 }
 /* BGM は最初から ON：ブラウザの制限で、最初のタップ（クリック・キー入力）と同時に鳴り始める */
-function unlockAudio(){ unlockIOS(); unlockTTS(); if (S.snd && S.vol.bgm > 0 && !$("ovBye").classList.contains("on")) BGM.start(); }
-addEventListener("pointerdown", unlockAudio, { once:true, capture:true });
-addEventListener("keydown", unlockAudio, { once:true, capture:true });
-addEventListener("click", unlockTTS, { once:true, capture:true });
-addEventListener("touchend", () => { unlockIOS(); unlockTTS(); }, { once:true, capture:true });
-addEventListener("click", unlockIOS, { capture:true });
+let firstTap = true;
+function unlockAudio(){
+  unlockIOS(); unlockTTS();
+  if (firstTap){ firstTap = false; if (S.snd && S.vol.bgm > 0 && !$("ovBye").classList.contains("on")) BGM.start(); }
+}
+["touchend","click","keydown"].forEach(ev => addEventListener(ev, unlockAudio, { capture:true }));
 $("go").onclick = () => { unlockIOS(); unlockTTS(); preloadVoices(); BGM.start(); $("ovStart").classList.remove("on"); newGame(QUIZ.map((_,i)=>i)); };
 $("again").onclick = () => { $("ovEnd").classList.remove("on"); newGame(QUIZ.map((_,i)=>i)); };
 
