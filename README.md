@@ -15,7 +15,7 @@ Listen to the clerk and choose the right answer. Get answers right in a row to m
 
 ## ▶ あそぶ / Play
 
-﻿https://yasu-fumi.github.io/N3-Convenience-Store-Quiz-01/
+**https://（ユーザー名）.github.io/（リポジトリ名）/**
 
 スマートフォン・パソコンのどちらでも遊べます（Chrome / Edge / Safari 推奨）。
 
