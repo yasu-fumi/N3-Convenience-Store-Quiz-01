@@ -664,18 +664,38 @@ function findURL(key){
   })();
   return voiceU[key];
 }
+/* ファイルの中身を先に取ってくる（音の準備がなくてもできる） */
+const voiceB = {};
+function fetchBytes(key){
+  if (!voiceB[key]) voiceB[key] = (async () => {
+    const u = await findURL(key); if (!u) return null;
+    try{ const r = await fetch(u); return r.ok ? await r.arrayBuffer() : null; }catch(e){ return null; }
+  })();
+  return voiceB[key];
+}
 function loadBuf(key){
   if (!voiceP[key]) voiceP[key] = (async () => {
-    const u = await findURL(key); if (!u) return null;
-    try{ const r = await fetch(u); return await decode(await r.arrayBuffer()); }catch(e){ return null; }
+    const ab = await fetchBytes(key); if (!ab || !ac()) return null;
+    try{ return await decode(ab.slice(0)); }catch(e){ return null; }
   })();
   return voiceP[key];
 }
+/* 読み込みの順番：「いらっしゃいませ」→ 第1問 → 残り（少しずつ）
+   いっせいに読み込むと、回線が遅いスマホで「いらっしゃいませ」が後回しになるため */
+let preloading = null;
 function preloadVoices(){
-  if (LOCAL) return;
-  const keys = QUIZ.flatMap(q => [q.id+"_clerk", q.id+"_answer"]).concat(["welcome","end","react_ok","react_ng"]);
-  if (IOS) keys.forEach(findURL); else if (ac()) keys.forEach(loadBuf);
+  if (LOCAL || preloading) return preloading;
+  const first = ["welcome", QUIZ[0].id+"_clerk", QUIZ[0].id+"_answer"];
+  const rest = QUIZ.slice(1).flatMap(q => [q.id+"_clerk", q.id+"_answer"]).concat(["end","react_ok","react_ng"]);
+  const load = IOS ? findURL : (k => fetchBytes(k).then(() => ac() && loadBuf(k)));
+  preloading = (async () => {
+    for (const k of first) await load(k);
+    for (let i = 0; i < rest.length; i += 3) await Promise.all(rest.slice(i, i + 3).map(load));
+  })();
+  return preloading;
 }
+/* ページを開いた時点で「いらっしゃいませ」と第1問の音声を取りにいく */
+if (!LOCAL){ (IOS ? findURL : fetchBytes)("welcome"); (IOS ? findURL : fetchBytes)(QUIZ[0].id+"_clerk"); }
 function tryFile(key, ext){
   return new Promise(res => {
     if (voiceMiss[key+ext]) return res(null);
@@ -964,9 +984,12 @@ function newGame(order){
   applyLevel(G.level);
   SE.door();
   // 「いらっしゃいませ」が言い終わってから約1.5秒あけて第1問へ
-  const g = GEN;
-  Promise.race([ voice("welcome", "いらっしゃいませ"), new Promise(r => setTimeout(r, 5000)) ])
-    .then(() => { if (g === GEN) later(showQ, 1500); });
+  // 「いらっしゃいませ」を言い終わるのを必ず待ってから、1.5秒あけて第1問へ
+  // （声が読み込めない・鳴らないときのために、最長12秒で先へ進む）
+  const g = GEN; let started = false;
+  const toQ1 = () => { if (started || g !== GEN) return; started = true; later(showQ, 1500); };
+  voice("welcome", "いらっしゃいませ").then(toQ1);
+  setTimeout(toQ1, 12000);
 }
 /* 翻訳を含む文の描画（言語を切り替えたときも呼ぶ） */
 function renderQText(q, pop){
