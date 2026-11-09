@@ -1023,7 +1023,7 @@ function renderQText(q, pop){
   $("qtext").innerHTML = rb(q.q) + tr(q.qT[S.lang]);
 }
 function showQ(){
-  const q = QUIZ[G.order[G.i]]; G.busy = false;
+  const q = QUIZ[G.order[G.i]]; G.busy = false; G.step = (G.step || 0) + 1;
   [...$("dots").children].forEach((d,k) => { d.className = k < G.i ? (G.res[G.order[k]] ? "ok" : "ng") : k===G.i ? "cur" : ""; });
   face("cf","normal"); face("uf","normal");
   setProp(q);
@@ -1064,7 +1064,7 @@ function choose(k, btn){
     if (G.combo >= 5){ $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go"); }
     const want = G.combo >= 7 ? 4 : G.combo >= 4 ? 3 : G.combo >= 2 ? 2 : 1;
     if (want > G.level) later(() => levelTo(want), 650);
-    later(() => voice("react_ok", "", false), 700);
+    { const st = G.step; later(() => { if (G.step === st) voice("react_ok", "", false); }, 700); }
   } else {
     const had = G.combo; G.combo = 0;
     SE.ng(); stampShow(false);
@@ -1072,7 +1072,7 @@ function choose(k, btn){
     face("cf","sad"); face("uf","sad"); react("💦");
     if (had >= 2){ const c = $("combo"); c.className = "brk"; setTimeout(()=>{ c.className = ""; }, 700); } else $("combo").className = "";
     if (G.level > 0) later(() => levelTo(G.level - 1), 650);
-    later(() => voice("react_ng", "", false), 600);
+    { const st = G.step; later(() => { if (G.step === st) voice("react_ng", "", false); }, 600); }
   }
   later(() => showFb(q, ok, k), ok ? 900 : 1000);
 }
@@ -1117,7 +1117,9 @@ function levelTo(l){
 function showFb(q, ok, k){
   G.fbOk = ok; renderFb(q, ok);
   requestAnimationFrame(()=>$("fb").classList.add("on"));
-  later(() => voice(q.id+"_answer", q.answerSay), ok ? 900 : 700);
+  // 「次へ」を早く押したときに、前の問題の答えが次の問題の途中で流れないようにする
+  const st = G.step;
+  later(() => { if (G.step === st && $("fb").classList.contains("on")) voice(q.id+"_answer", q.answerSay); }, ok ? 900 : 700);
 }
 function renderFb(q, ok){
   const fb = $("fb"), last = G.i === G.order.length - 1, wasOn = fb.classList.contains("on");
@@ -1137,7 +1139,7 @@ function renderFb(q, ok){
   $("nx").onclick = next;
 }
 function next(){
-  SE.tap(); stopVoice();
+  G.step = (G.step || 0) + 1; SE.tap(); stopVoice();
   $("fb").classList.remove("on");
   G.i++;
   if (G.i >= G.order.length) return later(finish, 300);
